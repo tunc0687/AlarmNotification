@@ -44,4 +44,7 @@ export const deleteAlarm = () => ({
     type: actionTypes.DELETE_ALARM
 })
 
-
+export const remainingCalculater = (alarms) => ({
+    type: actionTypes.REMAINING_TIME,
+    payload: alarms
+})

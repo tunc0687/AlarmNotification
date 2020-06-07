@@ -2,16 +2,13 @@ import React, { Component } from 'react'
 import AddAlarmIcon from '@material-ui/icons/AddAlarm';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { connect } from 'react-redux'
-import { allCheckedAlarm, changeMode } from '../../redux/actions/actions'
+import { allCheckedAlarm, changeMode, remainingCalculater } from '../../redux/actions/actions'
 import { NavLink } from 'react-router-dom';
-import moment from 'moment'
-import 'moment/locale/tr'
 
 
 class DisplayHeader extends Component {
     state = {
-        allSelect: false,
-        remaining: ""
+        allSelect: false
     }
 
     handleAllChecked = () => {
@@ -41,34 +38,18 @@ class DisplayHeader extends Component {
         return "Alarmları seçiniz"
     }
 
-    remainingTimeCalcutor = (timeList) => {
-        let remainingTime;
-        let remainingList = []
-        moment.locale("tr")
-        timeList.forEach(time => {
-            remainingTime = moment(time).fromNow()
-            remainingList.push(remainingTime)
-        });
-        return remainingList
+    componentDidMount() {
+        this.interval = setInterval(() => {
+            this.props.remainingCalculater(this.props.alarmList)
+            // if (this.props.remainingTime === "0 saniye kaldı") {
+                
+            // }
+        }, 1000);
+      
     }
 
-    alarmSorter = (alarms) => {
-        let date, minHour, dateTime;
-        let timeList = []
-        for (let i = 0; i < alarms.length; i++) {
-            date = alarms[i].date.split("-").reverse().join("-")
-            minHour = alarms[i].minHour
-            dateTime = date + "T" + minHour
-            timeList.push(new Date(dateTime))
-        }
-        timeList.sort((a, b) => a - b)
-        return this.remainingTimeCalcutor(timeList)
-    }
-
-    componentDidMount(){
-        setInterval(() => {
-            this.setState({remaining : this.alarmSorter(this.props.alarmList)[0]})
-        }, 60000);
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     render() {
@@ -80,7 +61,7 @@ class DisplayHeader extends Component {
                             ? <h2 className="display-text py-4">{this.countCheckedAlarm(this.props.alarmList)}</h2>
                             : this.props.alarmList.length > 0
                                 ? this.thereActivatedAlarms(this.props.alarmList)
-                                    ? <h2 className="display-text py-4"> {this.state.remaining} </h2>
+                                    ? <h2 className="display-text py-4"> {this.props.remainingTime} </h2>
                                     : <h2 className="display-text py-4">Tüm alarmlar kapalı</h2>
                                 : <h2 className="display-text py-4">Alarm Yok</h2>
                     }
@@ -109,8 +90,9 @@ class DisplayHeader extends Component {
 function mapStateToProps(state) {
     return {
         alarmList: state.alarmReducer,
-        deleteMode: state.modeReducer
+        deleteMode: state.modeReducer,
+        remainingTime: state.remainingReducer
     }
 }
 
-export default connect(mapStateToProps, { changeMode, allCheckedAlarm })(DisplayHeader)
+export default connect(mapStateToProps, { changeMode, allCheckedAlarm, remainingCalculater })(DisplayHeader)

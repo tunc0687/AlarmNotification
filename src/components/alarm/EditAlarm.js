@@ -6,21 +6,30 @@ import { addAlarm, changeMode } from '../../redux/actions/actions'
 
 class EditAlarm extends Component {
     state = {
-        redirect: false
+        redirect: false,
+        alertBox: true
     }
 
     handleSubmit = (event) => {
         event.preventDefault()
         let name = event.target[0].value
-        let dateTime = event.target[1].value.split("T")
-        let minHour = dateTime[1]
-        let date = dateTime[0]
-                    .split("-")
-                    .reverse()
-                    .join("-")
+        if (new Date() < new Date(event.target[1].value)) {
+            let dateTime = event.target[1].value.split("T")
+            let minHour = dateTime[1]
+            let date = dateTime[0]
+                .split("-")
+                .reverse()
+                .join("-")
 
-        this.props.addAlarm({ name, minHour, date, isActive: true, isChecked: false })
-        this.setState({redirect: true})
+            this.props.addAlarm({ name, minHour, date, isActive: true, isChecked: false })
+            this.setState({ redirect: true })
+        } else {
+            this.setState({ alertBox: false })
+            setTimeout(() => {
+                this.setState({ alertBox: true })
+            }, 2000);
+        }
+
     }
 
     render() {
@@ -33,6 +42,9 @@ class EditAlarm extends Component {
                 <div className="card-body">
                     <h3 className="card-title text-center">Alarm Ekle/Düzenle</h3>
                     <form onSubmit={(event) => this.handleSubmit(event)}>
+                        <div className="alert alert-danger" hidden={this.state.alertBox}>
+                            Geçmiş saatler için alarm ayarlanamaz!
+                        </div>
                         <div className="form-group text-center">
                             <input
                                 type="text"
