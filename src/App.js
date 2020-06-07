@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import DisplayHeader from './components/display/DisplayHeader'
+import DisplayBody from './components/display/DisplayBody'
+import EditAlarm from './components/alarm/EditAlarm'
+import DeleteAlarm from './components/alarm/DeleteAlarm'
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+    render() {
+        return (
+            <BrowserRouter>
+                <Switch>
+                    <Route exact path="/">
+                        <div className="card mt-3 w-35-center">
+                            <DisplayHeader />
+                            <DisplayBody />
+                        </div>
+                    </Route>
+                    <Route exact path="/add">
+                        <EditAlarm />
+                    </Route>
+                    <Route exact path="/delete">
+                        <div className="card mt-3 w-35-center">
+                            <DisplayHeader />
+                            <DeleteAlarm />
+                        </div>
+                    </Route>
+                    <Redirect to="/" />
+                </Switch>
+            </BrowserRouter>
+        )
+    }
 }
 
-export default App;
+export default App

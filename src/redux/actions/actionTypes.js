@@ -1,0 +1,7 @@
+export const ADD_ALARM = "ADD_ALARM"
+export const DELETE_ALARM = "DELETE_ALARM"
+export const ACTIVATED_ALARM = "ACTIVATED_ALARM"
+export const CHECKED_ALARM = "CHECKED_ALARM"
+export const EDIT_ALARM = "EDIT_ALARM"
+
+
