@@ -9,6 +9,8 @@ export const alarmReducer = (state=initialState.alarmList , action) => {
             return changeActivate([...state], action.payload)
         case actionTypes.CHECKED_ALARM:
             return changeChecked([...state], action.payload)
+        case actionTypes.ALL_CHECKED_ALARM:
+            return allChangeChecked([...state], action.payload)
         case actionTypes.DELETE_ALARM:
             return alarmDeleted([...state])
         default:
@@ -30,6 +32,13 @@ const changeChecked = (newState, id) => {
         if (alarm.id === id) {
             alarm.isChecked = !alarm.isChecked
         }
+    })
+    return newState;
+}
+
+const allChangeChecked = (newState, check) => {
+    newState.forEach(alarm => {
+        alarm.isChecked = check
     })
     return newState;
 }

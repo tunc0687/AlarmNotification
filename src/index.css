@@ -11,7 +11,8 @@
     height: 150px;
 }
 
-.link:active, .link:visited {
+.link:active, .link:visited, .link:hover {
     color: #212529;
+    text-decoration: none;
 }
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { NavLink, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { addAlarm } from '../../redux/actions/actions'
+import { addAlarm, changeMode } from '../../redux/actions/actions'
 
 
 class EditAlarm extends Component {
@@ -15,9 +15,9 @@ class EditAlarm extends Component {
         let dateTime = event.target[1].value.split("T")
         let minHour = dateTime[1]
         let date = dateTime[0]
-            .split("-")
-            .reverse()
-            .join("-")
+                    .split("-")
+                    .reverse()
+                    .join("-")
 
         this.props.addAlarm({ name, minHour, date, isActive: true, isChecked: false })
         this.setState({redirect: true})
@@ -50,7 +50,7 @@ class EditAlarm extends Component {
                         </div>
                         <div className="form-group">
                             <button type="submit" className="btn btn-success form-control my-2">Kaydet</button>
-                            <NavLink to="/" className="btn btn-secondary form-control">İptal Et</NavLink>
+                            <NavLink onClick={() => this.props.changeMode(false)} to="/" className="btn btn-secondary form-control">İptal Et</NavLink>
                         </div>
                     </form>
                 </div>
@@ -61,4 +61,4 @@ class EditAlarm extends Component {
 
 
 
-export default connect(null, { addAlarm })(EditAlarm)
+export default connect(null, { addAlarm, changeMode })(EditAlarm)
