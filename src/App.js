@@ -3,6 +3,7 @@ import DisplayHeader from './components/display/DisplayHeader'
 import DisplayBody from './components/display/DisplayBody'
 import EditAlarm from './components/alarm/EditAlarm'
 import DeleteAlarm from './components/alarm/DeleteAlarm'
+import SoundAlarm from './components/alarm/SoundAlarm'
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 
 class App extends Component {
@@ -24,6 +25,9 @@ class App extends Component {
                             <DisplayHeader />
                             <DeleteAlarm />
                         </div>
+                    </Route>
+                    <Route exact path="/play">
+                        <SoundAlarm />
                     </Route>
                     <Redirect to="/" />
                 </Switch>

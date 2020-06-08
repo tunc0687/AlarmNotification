@@ -1,12 +1,14 @@
-import {alarmReducer} from './alarmReducer'
-import {modeReducer} from './modeReducer'
-import {remainingReducer} from './remainingReducer'
-import {combineReducers} from 'redux'
+import { alarmReducer } from './alarmReducer'
+import { modeReducer } from './modeReducer'
+import { remainingReducer } from './remainingReducer'
+import { soundReducer } from './soundReducer'
+import { combineReducers } from 'redux'
 
 const rootReducer = combineReducers({
     alarmReducer,
     modeReducer,
-    remainingReducer
+    remainingReducer,
+    soundReducer
 })
 
 export default rootReducer;

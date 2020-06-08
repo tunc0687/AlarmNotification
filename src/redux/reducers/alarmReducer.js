@@ -13,6 +13,8 @@ export const alarmReducer = (state=initialState.alarmList , action) => {
             return allChangeChecked([...state], action.payload)
         case actionTypes.DELETE_ALARM:
             return alarmDeleted([...state])
+        case actionTypes.DISABLE_ALARM:
+            return alarmDisabled([...state])
         default:
             return state;
     }
@@ -48,3 +50,20 @@ const alarmDeleted = (newState) => {
     return newState;
 }
 
+
+const alarmDisabled = (newState) => {
+    let newDay, date, minHour, dateTime, dateNow;
+    newState.forEach(alarm => {
+        date = alarm.date.split("-").reverse().join("-")
+        minHour = alarm.minHour
+        dateTime = date + "T" + minHour
+        dateNow = new Date().getTime() + 1000
+        if (new Date(dateTime) < new Date(dateNow)) {
+            newDay = new Date().getDate() + 1
+            newDay < 10 ? newDay = "0" + newDay : newDay = String(newDay)
+            alarm.date = newDay + alarm.date.slice(2,10)
+            alarm.isActive = false
+        }
+    })
+    return newState;
+}

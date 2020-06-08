@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import AddAlarmIcon from '@material-ui/icons/AddAlarm';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { connect } from 'react-redux'
-import { allCheckedAlarm, changeMode, remainingCalculater } from '../../redux/actions/actions'
-import { NavLink } from 'react-router-dom';
+import { allCheckedAlarm, changeMode, remainingCalculater, disableAlarm, soundPlay } from '../../redux/actions/actions'
+import { NavLink, Redirect } from 'react-router-dom';
 
 
 class DisplayHeader extends Component {
@@ -41,11 +41,11 @@ class DisplayHeader extends Component {
     componentDidMount() {
         this.interval = setInterval(() => {
             this.props.remainingCalculater(this.props.alarmList)
-            // if (this.props.remainingTime === "0 saniye kaldı") {
-                
-            // }
+            if (this.props.remainingTime === "0 saniye kaldı") {
+                this.props.soundPlay(true)
+                this.props.disableAlarm()
+            }
         }, 1000);
-      
     }
 
     componentWillUnmount() {
@@ -53,6 +53,10 @@ class DisplayHeader extends Component {
     }
 
     render() {
+        if (this.props.playAlarm) {
+            return <Redirect to="/play"/>
+        }
+
         return (
             <div className="card-header">
                 <div className="text-center">
@@ -91,8 +95,9 @@ function mapStateToProps(state) {
     return {
         alarmList: state.alarmReducer,
         deleteMode: state.modeReducer,
-        remainingTime: state.remainingReducer
+        remainingTime: state.remainingReducer,
+        playAlarm: state.soundReducer
     }
 }
 
-export default connect(mapStateToProps, { changeMode, allCheckedAlarm, remainingCalculater })(DisplayHeader)
+export default connect(mapStateToProps, { changeMode, allCheckedAlarm, remainingCalculater, disableAlarm, soundPlay })(DisplayHeader)

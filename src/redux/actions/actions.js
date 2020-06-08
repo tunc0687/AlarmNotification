@@ -44,7 +44,17 @@ export const deleteAlarm = () => ({
     type: actionTypes.DELETE_ALARM
 })
 
+export const disableAlarm = () => ({
+    type: actionTypes.DISABLE_ALARM
+})
+
 export const remainingCalculater = (alarms) => ({
     type: actionTypes.REMAINING_TIME,
     payload: alarms
 })
+
+export const soundPlay = (check) => ({
+    type: actionTypes.PLAY_SOUND,
+    payload: check
+})
+
