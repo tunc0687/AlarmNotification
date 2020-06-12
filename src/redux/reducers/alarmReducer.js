@@ -6,7 +6,7 @@ export const alarmReducer = (state=initialState.alarmList , action) => {
         case actionTypes.ADD_ALARM:
             return [...state, action.payload]
         case actionTypes.ACTIVATED_ALARM:
-            return changeActivate([...state], action.payload)
+            return alarmChangeChecked([...state], action.payload)
         case actionTypes.CHECKED_ALARM:
             return changeChecked([...state], action.payload)
         case actionTypes.ALL_CHECKED_ALARM:
@@ -14,19 +14,10 @@ export const alarmReducer = (state=initialState.alarmList , action) => {
         case actionTypes.DELETE_ALARM:
             return alarmDeleted([...state])
         case actionTypes.DISABLE_ALARM:
-            return alarmDisabled([...state])
+            return alarmChangeChecked([...state], null)
         default:
             return state;
     }
-}
-
-const changeActivate = (newState, id) => {
-    newState.forEach(alarm => {
-        if (alarm.id === id) {
-            alarm.isActive = !alarm.isActive
-        }
-    })
-    return newState;
 }
 
 const changeChecked = (newState, id) => {
@@ -51,7 +42,7 @@ const alarmDeleted = (newState) => {
 }
 
 
-const alarmDisabled = (newState) => {
+const alarmChangeChecked = (newState, id) => {
     let newDay, date, minHour, dateTime, dateNow;
     newState.forEach(alarm => {
         date = alarm.date.split("-").reverse().join("-")
@@ -63,6 +54,9 @@ const alarmDisabled = (newState) => {
             newDay < 10 ? newDay = "0" + newDay : newDay = String(newDay)
             alarm.date = newDay + alarm.date.slice(2,10)
             alarm.isActive = false
+        }
+        if (alarm.id === id) {
+            alarm.isActive = !alarm.isActive
         }
     })
     return newState;

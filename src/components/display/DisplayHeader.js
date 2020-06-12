@@ -39,13 +39,15 @@ class DisplayHeader extends Component {
     }
 
     componentDidMount() {
-        this.interval = setInterval(() => {
-            this.props.remainingCalculater(this.props.alarmList)
-            if (this.props.remainingTime === "0 saniye kaldı") {
-                this.props.soundPlay(true)
-                this.props.disableAlarm()
-            }
-        }, 1000);
+        if (this.props.alarmList.length > 0) {
+            this.interval = setInterval(() => {
+                if (this.props.remainingTime === "0 saniye kaldı") {
+                    this.props.soundPlay(true)
+                    this.props.disableAlarm()
+                }
+                this.props.remainingCalculater(this.props.alarmList)
+            }, 1000);
+        }
     }
 
     componentWillUnmount() {

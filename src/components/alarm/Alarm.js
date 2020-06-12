@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import Switch from '@material-ui/core/Switch';
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import { activatedAlarm } from '../../redux/actions/actions'
-
+import { activatedAlarm, remainingCalculater } from '../../redux/actions/actions'
 
 
 class Alarm extends Component {
+    handleChecked = (id) => {
+        this.props.activatedAlarm(id);
+    }
+
     render() {
         const { id, name, minHour, date, isActive } = this.props.alarm
         return (
@@ -20,7 +22,7 @@ class Alarm extends Component {
                     <div className="col-2">
                         <Switch
                             checked={isActive}
-                            onChange={() => this.props.activatedAlarm(id)}
+                            onChange={() => this.handleChecked(id)}
                             inputProps={{ 'aria-label': 'secondary checkbox' }}
                         />
                     </div>
@@ -30,8 +32,11 @@ class Alarm extends Component {
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ activatedAlarm }, dispatch)
+function mapStateToProps(state) {
+    return {
+        alarmList: state.alarmReducer
+    }
 }
 
-export default connect(null, mapDispatchToProps)(Alarm)
+
+export default connect(mapStateToProps, { activatedAlarm, remainingCalculater })(Alarm)

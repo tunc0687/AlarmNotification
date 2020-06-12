@@ -24,7 +24,7 @@ const timeCalculate = (dif) => {
         let hour = Math.floor(dif / (60 * 60 * 1000));
         let min = Math.ceil((dif - hour * (60 * 60 * 1000)) / (60 * 1000))
         min < 60 ? message = hour + " saat " + min + " dakika kaldı"
-                 : message = (hour + 1) + " saat kaldı"
+            : message = (hour + 1) + " saat kaldı"
     } else {
         message = Math.floor(dif / (24 * 60 * 60 * 1000)) + " gün kaldı";
     }
@@ -47,13 +47,18 @@ const alarmSorter = (alarms) => {
         let date, minHour, dateTime;
         let timeList = []
         for (let i = 0; i < alarms.length; i++) {
-            date = alarms[i].date.split("-").reverse().join("-")
-            minHour = alarms[i].minHour
-            dateTime = date + "T" + minHour
-            timeList.push(new Date(dateTime))
+            if (alarms[i].isActive) {
+                date = alarms[i].date.split("-").reverse().join("-")
+                minHour = alarms[i].minHour
+                dateTime = date + "T" + minHour
+                timeList.push(new Date(dateTime))
+            }
         }
-        timeList.sort((a, b) => a - b)
-        return remainingTimeCalcutor(timeList)[0]
+        if (timeList.length > 0) {
+            timeList.sort((a, b) => a - b)
+            return remainingTimeCalcutor(timeList)[0]
+        }
+        return "Tüm alarmlar kapalı"
     } else {
         return "Alarm hesaplanıyor"
     }
